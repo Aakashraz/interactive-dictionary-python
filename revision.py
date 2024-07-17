@@ -47,4 +47,4 @@ for i in range(5):
     first.append(datetime.datetime.now().strftime("%Y %b %d %I:%M %p"))
     time.sleep(1)
 for i in first:
-    print(i)    #to print in new lines
+    print(i)    # to print in new lines
