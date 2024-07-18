@@ -1,7 +1,6 @@
 import requests
 import json
 
-
 # def divide(a, b):
 #     try:
 #         return a / b
@@ -53,18 +52,47 @@ for i in range(5):
 for i in first:
     print(i)  # to print in new lines
 
+# json api call
+# url = "https://jsonplaceholder.typicode.com/users/1/posts"
 
-# json api call from yahoo finance
-url = "https://covid-19-data.p.rapidapi.com/country"
-
-querystring = {"name":"italy","format":"json"}
-
-headers = {
-    "x-rapidapi-key": "c2809bb339mshd4c230066b81a5cp168e6ejsnb0f55d5d2fce",
-    "x-rapidapi-host": "covid-19-data.p.rapidapi.com"
+# define the base URL and endpoints
+base_url = "https://www.nrb.org.np/api/forex/v1/rates"
+# set up parameters
+params = {
+    "page": 1,
+    "per_page": 10,
+    "from": "2023-01-01",
+    "to": "2023-02-01",
 }
 
-response = requests.get(url, headers=headers, params=querystring)
-data = response.json()
-obj = json.dumps(data, indent=4)
-print(obj)
+# querystring = {"name":"italy","format":"json"}
+#
+# headers = {
+#     "x-rapidapi-key": "c2809bb339mshd4c230066b81a5cp168e6ejsnb0f55d5d2fce",
+#     "x-rapidapi-host": "covid-19-data.p.rapidapi.com"
+# }
+
+response = requests.get(base_url, params=params)
+if response.status_code == 200:
+    python_obj = response.json()
+    print(type(python_obj['data']['payload']))
+    entry = python_obj['data']['payload'][3]
+    print(f"entry type: {type(entry)}")
+    print(f"rates type: {type(entry['rates'])}")
+    if isinstance(entry['rates'], list):
+        for items in entry['rates']:
+            name = items['currency']['name']
+            currency_code = items['currency']['iso3']
+            buy = items['buy']
+            sell = items['sell']
+            print(f"Currency: {name}, Code: {currency_code} Buy: {buy}, Sell: {sell}")
+
+    # string_obj = json.dumps(python_obj, indent=3)
+    # print(string_obj)
+else:
+    print(f"Error: {response.status_code}")
+
+# to print the elements of lists
+# for obj in python_obj:
+#     print(obj['id'], obj['title'])
+#     print(f"Id:{obj['id']} and Title: {obj['title']} ")
