@@ -1,3 +1,7 @@
+import requests
+import json
+
+
 # def divide(a, b):
 #     try:
 #         return a / b
@@ -47,4 +51,20 @@ for i in range(5):
     first.append(datetime.datetime.now().strftime("%Y %b %d %I:%M %p"))
     time.sleep(1)
 for i in first:
-    print(i)    # to print in new lines
+    print(i)  # to print in new lines
+
+
+# json api call from yahoo finance
+url = "https://covid-19-data.p.rapidapi.com/country"
+
+querystring = {"name":"italy","format":"json"}
+
+headers = {
+    "x-rapidapi-key": "c2809bb339mshd4c230066b81a5cp168e6ejsnb0f55d5d2fce",
+    "x-rapidapi-host": "covid-19-data.p.rapidapi.com"
+}
+
+response = requests.get(url, headers=headers, params=querystring)
+data = response.json()
+obj = json.dumps(data, indent=4)
+print(obj)
