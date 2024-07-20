@@ -5,6 +5,7 @@ from difflib import get_close_matches
 
 # function to find the matching word
 def find(word):
+    word = word.lower()
     if word in data:
         return data[word]
     # to check if there are other words that matches with words in the data.json file,
@@ -24,8 +25,14 @@ def find(word):
 
 with open('data.json', 'r') as json_file:
     data = json.load(json_file)
-    search = input("Enter a word: ")
-    print(find(search.lower()))
+
+search = input("Enter a word: ")
+output = find(search)
+if isinstance(output, list):
+    for items in output:
+        print(items)
+else:
+    print(output)
 
 # url = "https://covid-19-data.p.rapidapi.com/country/code"
 #
