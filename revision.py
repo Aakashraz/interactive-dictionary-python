@@ -40,20 +40,19 @@ import json
 #     print("removed example.txt")
 
 
-# using date and time
-import datetime
-import time
+# ---------------------------using date and time
+# import datetime
+# import time
+#
+# first = []
+# for i in range(5):
+#     # now().strftime will format the time accordingly
+#     first.append(datetime.datetime.now().strftime("%Y %b %d %I:%M %p"))
+#     time.sleep(1)
+# for i in first:
+#     print(i)  # to print in new lines
 
-first = []
-for i in range(5):
-    # now().strftime will format the time accordingly
-    first.append(datetime.datetime.now().strftime("%Y %b %d %I:%M %p"))
-    time.sleep(1)
-for i in first:
-    print(i)  # to print in new lines
-
-# json api call
-# url = "https://jsonplaceholder.typicode.com/users/1/posts"
+# --------------------------------json api call
 
 # define the base URL and endpoints
 base_url = "https://www.nrb.org.np/api/forex/v1/rates"
@@ -61,8 +60,8 @@ base_url = "https://www.nrb.org.np/api/forex/v1/rates"
 params = {
     "page": 1,
     "per_page": 10,
-    "from": "2023-01-01",
-    "to": "2023-02-01",
+    "from": "2024-06-01",
+    "to": "2024-07-01",
 }
 
 # querystring = {"name":"italy","format":"json"}
@@ -72,27 +71,37 @@ params = {
 #     "x-rapidapi-host": "covid-19-data.p.rapidapi.com"
 # }
 
-response = requests.get(base_url, params=params)
-if response.status_code == 200:
-    python_obj = response.json()
-    print(type(python_obj['data']['payload']))
-    entry = python_obj['data']['payload'][3]
-    print(f"entry type: {type(entry)}")
-    print(f"rates type: {type(entry['rates'])}")
-    if isinstance(entry['rates'], list):
-        for items in entry['rates']:
-            name = items['currency']['name']
-            currency_code = items['currency']['iso3']
-            buy = items['buy']
-            sell = items['sell']
-            print(f"Currency: {name}, Code: {currency_code} Buy: {buy}, Sell: {sell}")
+# response = requests.get(base_url, params=params)
+# if response.status_code == 200:
+#     python_obj = response.json()
+#     print(type(python_obj['data']['payload']))
+#     entry = python_obj['data']['payload'][3]
+#     print(f"entry type: {type(entry)}")
+#     print(f"rates type: {type(entry['rates'])}")
+#     if isinstance(entry['rates'], list):
+#         for items in entry['rates']:
+#             # print(items)
+#             name = items['currency']['name']
+#             currency_code = items['currency']['iso3']
+#             unit = items['currency']['unit']
+#             buy = items['buy']
+#             sell = items['sell']
+#             print(f"Currency: {name}, Code: {currency_code}, Unit: {unit} Buy: {buy}, Sell: {sell}")
+#
+#     # string_obj = json.dumps(python_obj, indent=3)
+#     # print(string_obj)
+# else:
+#     print(f"Error: {response.status_code}")
 
-    # string_obj = json.dumps(python_obj, indent=3)
-    # print(string_obj)
-else:
-    print(f"Error: {response.status_code}")
-
+# ---------------------------------
 # to print the elements of lists
 # for obj in python_obj:
 #     print(obj['id'], obj['title'])
 #     print(f"Id:{obj['id']} and Title: {obj['title']} ")
+
+
+# ----------------working with pandas
+import pandas as pd
+
+df1 = pd.DataFrame([[2.5, 5], [4, 20], [3, 18]], columns=["rate", "price"])
+print(df1.price.mean())
