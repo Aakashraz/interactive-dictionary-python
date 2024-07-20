@@ -61,8 +61,8 @@ base_url = "https://www.nrb.org.np/api/forex/v1/rates"
 params = {
     "page": 1,
     "per_page": 10,
-    "from": "2023-01-01",
-    "to": "2023-02-01",
+    "from": "2024-06-01",
+    "to": "2024-07-01",
 }
 
 # querystring = {"name":"italy","format":"json"}
@@ -81,11 +81,13 @@ if response.status_code == 200:
     print(f"rates type: {type(entry['rates'])}")
     if isinstance(entry['rates'], list):
         for items in entry['rates']:
+            # print(items)
             name = items['currency']['name']
             currency_code = items['currency']['iso3']
+            unit = items['currency']['unit']
             buy = items['buy']
             sell = items['sell']
-            print(f"Currency: {name}, Code: {currency_code} Buy: {buy}, Sell: {sell}")
+            print(f"Currency: {name}, Code: {currency_code}, Unit: {unit} Buy: {buy}, Sell: {sell}")
 
     # string_obj = json.dumps(python_obj, indent=3)
     # print(string_obj)
