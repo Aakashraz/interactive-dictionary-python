@@ -105,3 +105,31 @@ import pandas as pd
 
 df1 = pd.DataFrame([[2.5, 5], [4, 20], [3, 18]], columns=["rate", "price"])
 print(df1.price.mean())
+# loading csv file
+# df2 = pd.read_csv('country.csv')
+# index = df2.set_index('Name')
+# print(index)
+
+# loading json file
+df3 = pd.read_json('supermarkets.json')
+df3.set_index('ID', inplace=True)
+# the inplace=True, means the original dataframe will be modified, rather than creating a new one
+print(dict(df3.loc[4:, 'Name']))
+# print(df3.iloc[1:3, :4])
+
+# Deleting the rows and columns
+df3 = df3.drop(df3.index[0:1], axis=0)
+print(df3, "\n")
+
+df3_columns = df3.drop(df3.columns[1:3], axis=1)
+print(df3_columns, "\n")
+
+# The second argument 0 (or alternatively, you could use axis=0) specifies that we're dropping a row.
+# If it were 1 (or axis=1), it would drop a column.
+print("columns: ",  df3.columns, "\n index: ", df3.index)
+
+# add columns
+df3['Continent'] = ["North America", "North America", "Asia", "Antarctica", "Asia"]
+# can alternatively also be done as below, to add five times
+# df3['Continent'] = df3.shape[0] * [North America]
+print(df3)
