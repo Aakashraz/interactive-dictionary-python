@@ -102,34 +102,59 @@ params = {
 
 # ----------------working with pandas
 import pandas as pd
+from geopy.geocoders import Nominatim
 
 df1 = pd.DataFrame([[2.5, 5], [4, 20], [3, 18]], columns=["rate", "price"])
 print(df1.price.mean())
+
 # loading csv file
 # df2 = pd.read_csv('country.csv')
 # index = df2.set_index('Name')
 # print(index)
 
 # loading json file
-df3 = pd.read_json('supermarkets.json')
-df3.set_index('ID', inplace=True)
+# df3 = pd.read_json('supermarkets.json')
+# df3.set_index('ID', inplace=True)
 # the inplace=True, means the original dataframe will be modified, rather than creating a new one
-print(dict(df3.loc[4:, 'Name']))
-# print(df3.iloc[1:3, :4])
+# print(f"using loc: {dict(df3.loc[4:, 'Name'])}")
+# Used as: -------------- df.iloc[row_indices, column_indices]
+# print(f"using iloc: {df3.iloc[1:3, 1:4]}")
 
 # Deleting the rows and columns
-df3 = df3.drop(df3.index[0:1], axis=0)
-print(df3, "\n")
-
-df3_columns = df3.drop(df3.columns[1:3], axis=1)
-print(df3_columns, "\n")
+# df3 = df3.drop(df3.index[0:1], axis=0)
+# print(df3, "\n\n")
+#
+# df3_columns = df3.drop(df3.columns[1:3], axis=1)
+# print(df3_columns, "\n\n\n")
 
 # The second argument 0 (or alternatively, you could use axis=0) specifies that we're dropping a row.
 # If it were 1 (or axis=1), it would drop a column.
-print("columns: ",  df3.columns, "\n index: ", df3.index)
+# print("columns: ",  df3.columns, "\n index: ", df3.index)
 
 # add columns
-df3['Continent'] = ["North America", "North America", "Asia", "Antarctica", "Asia"]
+# df3['Continent'] = ["North America", "North America", "Asia", "Antarctica", "Asia"]
 # can alternatively also be done as below, to add five times
 # df3['Continent'] = df3.shape[0] * [North America]
-print(df3)
+# print(df3)
+
+# Using geocoders
+# A geocoding service that converts addresses into latitude and longitude coordinates and vice versa.
+nom = Nominatim(user_agent="my_geolocator")
+n = nom.geocode("Imadol, Lalitpur, Nepal")
+print(f"Data: {n} \nLat: {n.latitude}, Lon: {n.longitude}")
+
+# using the csv file to geolocate
+df4 = pd.read_json('supermarkets.json')
+
+# to modify 'Address' column
+df4['Address'] = df4['Address'] + ',' + df4['City'] + ',' + df4['State'] + ',' + df4['Country']
+
+# to add "Coordinates" column by applying nom.geocode to "Address" column's data
+df4["Coordinates"] = df4["Address"].apply(nom.geocode)
+
+# to add latitude and longitude columns using lambda function
+df4["Lat"] = df4["Coordinates"].apply(lambda x: x.latitude if x is not None else None)
+df4["Long"] = df4["Coordinates"].apply(lambda x: x.longitude if x is not None else None)
+
+print(df4)
+# print(df4.Coordinates[1].latitude, df4.Coordinates[1].longitude)
