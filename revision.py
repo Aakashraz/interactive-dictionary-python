@@ -156,5 +156,41 @@ df4["Coordinates"] = df4["Address"].apply(nom.geocode)
 df4["Lat"] = df4["Coordinates"].apply(lambda x: x.latitude if x is not None else None)
 df4["Long"] = df4["Coordinates"].apply(lambda x: x.longitude if x is not None else None)
 
-print(df4)
+# print(df4)
 # print(df4.Coordinates[1].latitude, df4.Coordinates[1].longitude)
+
+
+# -----------------------   numpy   -----------------------
+import numpy
+import cv2
+
+# n = numpy.arange(125)
+# using numpy.arange() to reshape into multidimensional array
+# r = n.reshape(5, 5, 5)
+# print(r)
+
+img_gray = cv2.imread('smallgray.png', 0)
+print(img_gray)
+# cv2.imwrite('newsmallgray.png', img_gray)  # to create new gray image file
+
+# indexing/slicing array
+# this will give first two row and then, third and fourth column
+index = img_gray[:2, 2:4]
+print(f"Index: {index}")
+
+# concatenation of numpy array: horizontal and vertical stack
+horizontal_stack = numpy.hstack([img_gray, img_gray, img_gray])
+print(f"Horizontal stack:\n{horizontal_stack}")
+vertical_stack = numpy.vstack([img_gray, img_gray, img_gray, img_gray])
+print(f"vertical_stack shape:\n{vertical_stack.shape} \nvertical_stack:\n{vertical_stack}")
+
+# splitting the arrays
+h_split = numpy.hsplit(horizontal_stack, 5)
+print(f"horizontal split:\n{h_split}")
+v_split = numpy.vsplit(vertical_stack, 4)
+print(f"vertical split:\n{v_split}")
+
+# accessing these array because it is of type list
+print(f"Type: {type(h_split)} {type(v_split)}")
+print(h_split[1])
+print(v_split[1])
